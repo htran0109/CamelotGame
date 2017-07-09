@@ -26,12 +26,19 @@ public class TextUpdater : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        checkKeys();
 	}
 
     /**
-     * 
+     * Simple tester for the TranscriptReader class
      */
+     void checkKeys()
+    {
+        if(Input.GetButtonDown("Fire1"))
+        {
+            updateText(TranscriptReader.getNextLine("testScene"));
+        }
+    }
 
     /**
      * Using the existing text box underneath the GUI element, update the text

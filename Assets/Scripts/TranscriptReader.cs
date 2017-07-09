@@ -25,7 +25,7 @@ public class TranscriptReader{
         //if the file has not yet been loaded, load in strings
         if(rs.sceneStrings == null)
         {
-            rs.sceneStrings = rs.loadNewFile("sceneName.scene");
+            rs.sceneStrings = rs.loadNewFile(sceneName + ".scene");
             if(rs.sceneStrings == null)
             {
                 Debug.LogError("Scene Not Found");
@@ -61,9 +61,14 @@ public class TranscriptReader{
             //initialize fileReading, keep reading until all strings are read in
             List<string> lines = new List<string>();
             string nextLine;
-            StreamReader fileReader = new StreamReader(filename);
+            Debug.Log(filename);
+            Debug.Log(Directory.GetCurrentDirectory() + "\\Assets\\TextScenes\\" + filename);
+            //Use the Assets/TextScene folder for all scenes
+            StreamReader fileReader = 
+                    new StreamReader(Directory.GetCurrentDirectory() +"\\Assets\\TextScenes\\" + filename);
             while ((nextLine = fileReader.ReadLine()) != null)
             {
+                Debug.Log("Reading lines");
                 lines.Add(nextLine);
             }
             return lines.ToArray();
