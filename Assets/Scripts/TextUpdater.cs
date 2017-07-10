@@ -8,6 +8,9 @@ public class TextUpdater : MonoBehaviour {
     public static Text textToEdit;
     public static Image UIBackground;
     private static TextUpdater updateSingleton;
+    private static bool textScrolling;
+    private static string currText;
+    private static int currLoadedIndex;
 	// Use this for initialization
 
 
@@ -27,6 +30,7 @@ public class TextUpdater : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         checkKeys();
+        slowUpdateText();
 	}
 
     /**
@@ -34,9 +38,37 @@ public class TextUpdater : MonoBehaviour {
      */
      void checkKeys()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && textScrolling == false)
         {
             updateText(TranscriptReader.getNextLine("testScene"));
+            textScrolling = true;
+            
+        }
+        else if (Input.GetButtonDown("Fire1") && textScrolling == true)
+        {
+            fastLoadText();
+            
+        }
+    }
+
+    public static void slowUpdateText()
+    {
+        if (textScrolling == true)
+        {
+            slowUpdateIterate();
+        }
+    }
+
+    public static void slowUpdateIterate()
+    {
+        if(currLoadedIndex > currText.Length)
+        {
+            textScrolling = false;
+        }
+        else
+        {
+            textToEdit.text = currText.Substring(0, currLoadedIndex);
+            currLoadedIndex++;
         }
     }
 
@@ -50,6 +82,16 @@ public class TextUpdater : MonoBehaviour {
         {
             updateSingleton = new TextUpdater();
         }*/
-        textToEdit.text = newText;
+        //temp call to immediately show text
+        //textToEdit.text = newText;
+        currText = newText;
+        currLoadedIndex = 0;
+    }
+
+    public static void fastLoadText()
+    {
+        textToEdit.text = currText;
+        textScrolling = false;
     }
 }
+
